@@ -1,0 +1,10 @@
+# price离散化(四分位)
+import pandas as pd
+df=pd.read_csv("train.csv")
+col="price" if "price" in df.columns else ("SalePrice" if "SalePrice" in df.columns else None)
+if col is None: raise SystemExit("no price")
+s=df[col].astype(float)
+b=pd.qcut(s,4,labels=[1,2,3,4],duplicates="drop")
+df[col+"Bin"]=b.astype(int)
+df.to_csv("trainPriceBin.csv",index=False)
+print("done")

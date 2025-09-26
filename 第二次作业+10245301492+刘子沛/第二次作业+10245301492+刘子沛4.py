@@ -1,0 +1,11 @@
+# price标准化(对数+Z)
+import pandas as pd,numpy as np
+df=pd.read_csv("train.csv")
+col="price" if "price" in df.columns else ("SalePrice" if "SalePrice" in df.columns else None)
+if col is None: raise SystemExit("no price")
+s=df[col].astype(float)
+x=np.log1p(s)
+z=(x-x.mean())/x.std(ddof=0)
+df[col]=z.round(3)
+df.to_csv("trainPriceStd.csv",index=False)
+print("done")
